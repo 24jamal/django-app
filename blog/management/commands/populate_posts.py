@@ -6,6 +6,9 @@ class Command(BaseCommand):
     help = "This commands inserts post data"
 
     def handle(self, *args : Any , **options : Any):
+
+        #Delete existing data
+        Post.objects.all().delete()
                 
         titles = [
                     "The Future of AI",
