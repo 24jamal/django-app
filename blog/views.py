@@ -13,20 +13,18 @@ def index(request):
     return render(request, 'blog/index.html', {'blog_title' : blog_title, "posts" : posts})
 
 
-def detail(request, post_id):
+def detail(request, slug):
 
     # static data
     try :
 
         #getting data from model by post id
-        post = Post.objects.get(pk=post_id)
+        post = Post.objects.get(slug=slug)
     except Post.DoesNotExist:
         raise Http404("Post doesn't exists")
 
     # post =next((item for item in posts if item['id'] == post_id), None)
-    #getting data from model by post id
-    post = Post.objects.get(pk=post_id)
-
+    
     #logger = logging.getLogger("")
     #logger.debug(f"post variable is {post}")
     return render(request, 'blog/detail.html', {'post' : post})
