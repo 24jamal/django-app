@@ -36,3 +36,22 @@ def old_url_redirect(request):
 
 def new_url_view(request):
     return HttpResponse("This is the new URL")
+
+def contact_view(request):
+    logger = logging.getLogger("TESTING")
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        message = request.POST.get("message")
+
+        if form.is_valid():
+            logger.debug(f"post variable is {form.cleaned_data['name']} {form.cleaned_data['email']} {form.cleaned_data['message']} ")
+            success_message = 'Your Email has been sent!'
+            return render(request, 'blog/contact.html', {'form': form,'success_message': success_message})
+
+        else :
+            logger.debug('Form validation failure')
+        return render(request, 'blog/contact.html', {'form': form, 'name' :name, 'email':email,'message': message})
+    return render(request, 'blog/contact.html')
