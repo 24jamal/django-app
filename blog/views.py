@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 import logging
-from .models import Post
+from .models import Post, AboutUs
 from django.http import Http404
 from django.core.paginator import Paginator
 from .forms import ContactForm
@@ -44,7 +44,7 @@ def old_url_redirect(request):
 def new_url_view(request):
     return HttpResponse("This is the new URL")
 
-def contact_view(request):
+def contact(request):
     logger = logging.getLogger("TESTING")
 
     if request.method == 'POST':
@@ -62,3 +62,14 @@ def contact_view(request):
             logger.debug('Form validation failure')
         return render(request, 'blog/contact.html', {'form': form, 'name' :name, 'email':email,'message': message})
     return render(request, 'blog/contact.html')
+
+def about(request):
+
+    about_content = AboutUs.objects.first().content
+    if about_content is None or not about_content.content:
+        about_content = "Default content goes here."
+
+    else :
+        about_content = about_content.content
+    
+    return render(request, 'blog/about.html',{'about_content': about_content})
