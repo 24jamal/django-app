@@ -5,7 +5,8 @@ import logging
 from .models import Post, AboutUs
 from django.http import Http404
 from django.core.paginator import Paginator
-from .forms import ContactForm, RegisterForm
+from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login
 
 # Create your views here.
 def index(request):
@@ -79,6 +80,9 @@ def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save() #user data created
-            print("Register Success!")
+            user = form.save(commit=False) #user data created
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            messages.success(request,'Registration Successful. You can log in')
     return render(request, 'blog/register.html', {'form': form})
+
