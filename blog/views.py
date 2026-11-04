@@ -104,14 +104,19 @@ def login(request):
 
             if user is not None:
                 auth_login(request,user)
-                return  redirect("/dashboard") # redirect to dashboard
+                return  redirect("blog:dashboard") # redirect to dashboard
 
             print("LOGIN SUCCESS!")
 
 
     return render(request, 'blog/login.html', {'form': form})
+
 def dashboard(request):
 
     blog_title = "My posts"
     return render(request,'blog/dashboard.html' , {"blog_title" : blog_title})
 
+def logout(request):
+
+    auth_logout(request)
+    return redirect("blog:index")
